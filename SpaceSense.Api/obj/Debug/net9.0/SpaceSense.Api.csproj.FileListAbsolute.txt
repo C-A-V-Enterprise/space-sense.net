@@ -7,7 +7,6 @@ C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\SpaceSense.Api.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\SpaceSense.Api.pdb
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Humanizer.dll
-C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.Build.Locator.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
