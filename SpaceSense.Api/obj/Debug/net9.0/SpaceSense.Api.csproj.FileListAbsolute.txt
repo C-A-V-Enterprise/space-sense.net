@@ -139,3 +139,6 @@ C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
