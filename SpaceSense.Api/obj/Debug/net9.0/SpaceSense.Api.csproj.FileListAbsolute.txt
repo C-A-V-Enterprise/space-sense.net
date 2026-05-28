@@ -19,7 +19,6 @@ C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.InMemory.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\labsfiap\.gemini\antigravity\scratch\space-sense.net\SpaceSense.Api\bin\Debug\net9.0\Microsoft.OpenApi.dll
