@@ -9,56 +9,47 @@ Esta é a ramificação do projeto construída em **.NET**, servindo como uma **
 A inovação deste projeto baseia-se na proteção do ecossistema espacial (Economia Espacial). A solução utiliza:
 - **.NET 9 (C#)** e **ASP.NET Core Web API**
 - **Entity Framework Core** (ORM)
-- Persistência com Banco de Dados Relacional (**SQLite** configurado nativamente, pronto para Oracle)
+- Persistência com Banco de Dados Relacional (**SQLite** configurado nativamente)
 - **Migrations** ativadas para controle de versão do banco de dados
 
-## 🏗️ Diagramas e Arquitetura
+## 🏗️ Diagramas e Arquitetura Avançada (Boas Práticas)
 
-O projeto atende a boas práticas de programação e arquitetura, mapeando os requisitos de banco de dados diretamente nos Models utilizando Data Annotations.
+O projeto atende a estritas boas práticas de programação e arquitetura exigidas no mercado:
+- **Padrão DTO (Data Transfer Objects):** A API não expõe diretamente os modelos do banco de dados. Todas as requisições passam por classes `[Model]RequestDTO` e `[Model]ResponseDTO` para garantir segurança e isolamento.
+- **Validações Rigorosas:** Os DTOs implementam validações complexas com *Data Annotations* (ex: `[Required]`, `[StringLength]`, `[Range]`) para rejeitar dados inválidos automaticamente (Erro 400).
+- **Tratamento de JSON Cycles:** Configuração global com `ReferenceHandler.IgnoreCycles` para evitar erros 500 ao serializar relacionamentos bidirecionais complexos.
 
 *Diagrama Entidade-Relacionamento:*
-As 7 entidades (Empresa, Orbita, Satelite, DetritoEspacial, Plataforma, Alerta e Usuario) foram espelhadas no Entity Framework.
-- **Relacionamentos (1:N e N:N):** Mapeados corretamente no `DbContext` (Ex: Um Satélite pertence a uma Empresa, etc).
+As 7 entidades (Empresa, Orbita, Satelite, DetritoEspacial, Plataforma, Alerta e Usuario) foram mapeadas perfeitamente.
+- **Relacionamentos (1:N e N:N):** Mapeados e blindados com os DTOs.
 
 ## ⚙️ Desenvolvimento e Como Executar
 
-O desenvolvimento foi focado na criação de 7 Controladores CRUD baseados em REST.
+O desenvolvimento foi focado na criação de 7 Controladores CRUD baseados em REST que conversam exclusivamente via DTOs.
 
-Para rodar o projeto e aplicar a persistência:
+Para rodar o projeto localmente e acessar a documentação interativa:
 1. Clone o repositório:
    ```bash
    git clone https://github.com/C-A-V-Enterprise/space-sense.net.git
    ```
-2. Entre na pasta:
+2. Entre na pasta da API:
    ```bash
    cd space-sense.net/SpaceSense.Api
    ```
-3. (Opcional) Crie o banco de dados rodando as migrations:
-   ```bash
-   dotnet ef database update
-   ```
-4. Rode a API:
+3. A base SQLite e a Migration inicial (`InitialCreate`) já estão integradas no repositório. Basta iniciar a aplicação:
    ```bash
    dotnet run
    ```
 
-## 🧪 Instruções de Acesso e Exemplos de Testes
+## 🧪 Instruções de Acesso e Interface Gráfica (Testes)
 
-A API subirá localmente (geralmente em `http://localhost:5222`).
-Para testar, você pode utilizar o **Swagger** (adicionando `/openapi/v1.json` na URL) ou ferramentas como o Postman/Insomnia.
+Para facilitar os testes sem a necessidade do Postman, a API conta com a interface visual do **Swagger UI** (Swashbuckle) integrada e configurada para redirecionamento automático!
 
-**Exemplo de Teste - Cadastrar Empresa (POST `/api/empresas`):**
-```json
-{
-  "empresaNome": "SpaceX",
-  "empresaPais": "EUA"
-}
-```
+1. Assim que o `dotnet run` iniciar, acesse o link no seu navegador (geralmente `http://localhost:5222`).
+2. Você será automaticamente redirecionado para `http://localhost:5222/swagger`.
+3. Use a interface gráfica do Swagger para testar todos os GET, POST, etc. 
 
-**Exemplo de Teste - Consultar Empresas (GET `/api/empresas`):**
-```bash
-curl -X GET "http://localhost:5222/api/empresas"
-```
+*Experimente tentar enviar um POST de Satélite sem preencher os campos para ver a validação de DTO em ação (Erro 400 Bad Request)!*
 
 ## 👥 Integrantes
 
