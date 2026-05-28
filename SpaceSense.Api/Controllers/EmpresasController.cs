@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpaceSense.Api.Data;
 using SpaceSense.Api.DTOs;
-using SpaceSense.Api.Models;
+using SpaceSense.Api.Services;
 
 namespace SpaceSense.Api.Controllers
 {
@@ -10,24 +8,17 @@ namespace SpaceSense.Api.Controllers
     [ApiController]
     public class EmpresasController : ControllerBase
     {
-        private readonly SatGuardDbContext _context;
+        private readonly IEmpresaService _service;
 
-        public EmpresasController(SatGuardDbContext context)
+        public EmpresasController(IEmpresaService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmpresaResponseDTO>>> GetEmpresas()
         {
-            var empresas = await _context.Empresas.ToListAsync();
-            var response = empresas.Select(e => new EmpresaResponseDTO
-            {
-                EmpresaId = e.EmpresaId,
-                EmpresaNome = e.EmpresaNome,
-                EmpresaPais = e.EmpresaPais
-            }).ToList();
-
+            var response = await _service.GetEmpresasAsync();
             return Ok(response);
         }
 
@@ -39,22 +30,7 @@ namespace SpaceSense.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var empresa = new Empresa
-            {
-                EmpresaNome = request.EmpresaNome,
-                EmpresaPais = request.EmpresaPais
-            };
-
-            _context.Empresas.Add(empresa);
-            await _context.SaveChangesAsync();
-
-            var response = new EmpresaResponseDTO
-            {
-                EmpresaId = empresa.EmpresaId,
-                EmpresaNome = empresa.EmpresaNome,
-                EmpresaPais = empresa.EmpresaPais
-            };
-
+            var response = await _service.CreateEmpresaAsync(request);
             return CreatedAtAction(nameof(GetEmpresas), new { id = response.EmpresaId }, response);
         }
     }

@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpaceSense.Api.Data;
 using SpaceSense.Api.DTOs;
-using SpaceSense.Api.Models;
+using SpaceSense.Api.Services;
 
 namespace SpaceSense.Api.Controllers
 {
@@ -10,26 +8,17 @@ namespace SpaceSense.Api.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly SatGuardDbContext _context;
+        private readonly IUsuarioService _service;
 
-        public UsuariosController(SatGuardDbContext context)
+        public UsuariosController(IUsuarioService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsuarioResponseDTO>>> GetUsuarios()
         {
-            var usuarios = await _context.Usuarios.ToListAsync();
-            var response = usuarios.Select(u => new UsuarioResponseDTO
-            {
-                UsuarioId = u.UsuarioId,
-                UsuarioNome = u.UsuarioNome,
-                UsuarioEmail = u.UsuarioEmail,
-                UsuarioTipo = u.UsuarioTipo,
-                PlataformaId = u.PlataformaId
-            }).ToList();
-
+            var response = await _service.GetUsuariosAsync();
             return Ok(response);
         }
 
@@ -41,27 +30,7 @@ namespace SpaceSense.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var usuario = new Usuario
-            {
-                UsuarioNome = request.UsuarioNome,
-                UsuarioEmail = request.UsuarioEmail,
-                UsuarioSenha = request.UsuarioSenha, // Em produção, a senha deve ser hasheada!
-                UsuarioTipo = request.UsuarioTipo,
-                PlataformaId = request.PlataformaId
-            };
-
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
-
-            var response = new UsuarioResponseDTO
-            {
-                UsuarioId = usuario.UsuarioId,
-                UsuarioNome = usuario.UsuarioNome,
-                UsuarioEmail = usuario.UsuarioEmail,
-                UsuarioTipo = usuario.UsuarioTipo,
-                PlataformaId = usuario.PlataformaId
-            };
-
+            var response = await _service.CreateUsuarioAsync(request);
             return CreatedAtAction(nameof(GetUsuarios), new { id = response.UsuarioId }, response);
         }
     }

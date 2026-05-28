@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpaceSense.Api.Data;
 using SpaceSense.Api.DTOs;
-using SpaceSense.Api.Models;
+using SpaceSense.Api.Services;
 
 namespace SpaceSense.Api.Controllers
 {
@@ -10,25 +8,17 @@ namespace SpaceSense.Api.Controllers
     [ApiController]
     public class OrbitasController : ControllerBase
     {
-        private readonly SatGuardDbContext _context;
+        private readonly IOrbitaService _service;
 
-        public OrbitasController(SatGuardDbContext context)
+        public OrbitasController(IOrbitaService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrbitaResponseDTO>>> GetOrbitas()
         {
-            var orbitas = await _context.Orbitas.ToListAsync();
-            var response = orbitas.Select(o => new OrbitaResponseDTO
-            {
-                OrbitaId = o.OrbitaId,
-                OrbitaAltitudeKm = o.OrbitaAltitudeKm,
-                OrbitaCategoria = o.OrbitaCategoria,
-                OrbitaInclinacao = o.OrbitaInclinacao
-            }).ToList();
-
+            var response = await _service.GetOrbitasAsync();
             return Ok(response);
         }
 
@@ -40,24 +30,7 @@ namespace SpaceSense.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var orbita = new Orbita
-            {
-                OrbitaAltitudeKm = request.OrbitaAltitudeKm,
-                OrbitaCategoria = request.OrbitaCategoria,
-                OrbitaInclinacao = request.OrbitaInclinacao
-            };
-
-            _context.Orbitas.Add(orbita);
-            await _context.SaveChangesAsync();
-
-            var response = new OrbitaResponseDTO
-            {
-                OrbitaId = orbita.OrbitaId,
-                OrbitaAltitudeKm = orbita.OrbitaAltitudeKm,
-                OrbitaCategoria = orbita.OrbitaCategoria,
-                OrbitaInclinacao = orbita.OrbitaInclinacao
-            };
-
+            var response = await _service.CreateOrbitaAsync(request);
             return CreatedAtAction(nameof(GetOrbitas), new { id = response.OrbitaId }, response);
         }
     }

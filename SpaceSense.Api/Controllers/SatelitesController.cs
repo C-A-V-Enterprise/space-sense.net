@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpaceSense.Api.Data;
 using SpaceSense.Api.DTOs;
-using SpaceSense.Api.Models;
+using SpaceSense.Api.Services;
 
 namespace SpaceSense.Api.Controllers
 {
@@ -10,29 +8,17 @@ namespace SpaceSense.Api.Controllers
     [ApiController]
     public class SatelitesController : ControllerBase
     {
-        private readonly SatGuardDbContext _context;
+        private readonly ISateliteService _service;
 
-        public SatelitesController(SatGuardDbContext context)
+        public SatelitesController(ISateliteService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SateliteResponseDTO>>> GetSatelites()
         {
-            var satelites = await _context.Satelites.ToListAsync();
-            var response = satelites.Select(s => new SateliteResponseDTO
-            {
-                SateliteId = s.SateliteId,
-                SateliteNome = s.SateliteNome,
-                SateliteFuncao = s.SateliteFuncao,
-                SateliteStatus = s.SateliteStatus,
-                SateliteDataLancamento = s.SateliteDataLancamento,
-                SateliteVelocidade = s.SateliteVelocidade,
-                EmpresaId = s.EmpresaId,
-                OrbitaId = s.OrbitaId
-            }).ToList();
-
+            var response = await _service.GetSatelitesAsync();
             return Ok(response);
         }
 
@@ -44,32 +30,7 @@ namespace SpaceSense.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var satelite = new Satelite
-            {
-                SateliteNome = request.SateliteNome,
-                SateliteFuncao = request.SateliteFuncao,
-                SateliteStatus = request.SateliteStatus,
-                SateliteDataLancamento = request.SateliteDataLancamento,
-                SateliteVelocidade = request.SateliteVelocidade,
-                EmpresaId = request.EmpresaId,
-                OrbitaId = request.OrbitaId
-            };
-
-            _context.Satelites.Add(satelite);
-            await _context.SaveChangesAsync();
-
-            var response = new SateliteResponseDTO
-            {
-                SateliteId = satelite.SateliteId,
-                SateliteNome = satelite.SateliteNome,
-                SateliteFuncao = satelite.SateliteFuncao,
-                SateliteStatus = satelite.SateliteStatus,
-                SateliteDataLancamento = satelite.SateliteDataLancamento,
-                SateliteVelocidade = satelite.SateliteVelocidade,
-                EmpresaId = satelite.EmpresaId,
-                OrbitaId = satelite.OrbitaId
-            };
-
+            var response = await _service.CreateSateliteAsync(request);
             return CreatedAtAction(nameof(GetSatelites), new { id = response.SateliteId }, response);
         }
     }

@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpaceSense.Api.Data;
 using SpaceSense.Api.DTOs;
-using SpaceSense.Api.Models;
+using SpaceSense.Api.Services;
 
 namespace SpaceSense.Api.Controllers
 {
@@ -10,27 +8,17 @@ namespace SpaceSense.Api.Controllers
     [ApiController]
     public class AlertasController : ControllerBase
     {
-        private readonly SatGuardDbContext _context;
+        private readonly IAlertaService _service;
 
-        public AlertasController(SatGuardDbContext context)
+        public AlertasController(IAlertaService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AlertaResponseDTO>>> GetAlertas()
         {
-            var alertas = await _context.Alertas.ToListAsync();
-            var response = alertas.Select(a => new AlertaResponseDTO
-            {
-                AlertaId = a.AlertaId,
-                AlertaNivel = a.AlertaNivel,
-                AlertaDescricao = a.AlertaDescricao,
-                AlertaData = a.AlertaData,
-                SateliteId = a.SateliteId,
-                PlataformaId = a.PlataformaId
-            }).ToList();
-
+            var response = await _service.GetAlertasAsync();
             return Ok(response);
         }
 
@@ -42,28 +30,7 @@ namespace SpaceSense.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var alerta = new Alerta
-            {
-                AlertaNivel = request.AlertaNivel,
-                AlertaDescricao = request.AlertaDescricao,
-                AlertaData = request.AlertaData,
-                SateliteId = request.SateliteId,
-                PlataformaId = request.PlataformaId
-            };
-
-            _context.Alertas.Add(alerta);
-            await _context.SaveChangesAsync();
-
-            var response = new AlertaResponseDTO
-            {
-                AlertaId = alerta.AlertaId,
-                AlertaNivel = alerta.AlertaNivel,
-                AlertaDescricao = alerta.AlertaDescricao,
-                AlertaData = alerta.AlertaData,
-                SateliteId = alerta.SateliteId,
-                PlataformaId = alerta.PlataformaId
-            };
-
+            var response = await _service.CreateAlertaAsync(request);
             return CreatedAtAction(nameof(GetAlertas), new { id = response.AlertaId }, response);
         }
     }

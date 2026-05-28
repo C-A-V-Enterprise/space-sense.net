@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpaceSense.Api.Data;
 using SpaceSense.Api.DTOs;
-using SpaceSense.Api.Models;
+using SpaceSense.Api.Services;
 
 namespace SpaceSense.Api.Controllers
 {
@@ -10,26 +8,17 @@ namespace SpaceSense.Api.Controllers
     [ApiController]
     public class DetritosEspaciaisController : ControllerBase
     {
-        private readonly SatGuardDbContext _context;
+        private readonly IDetritoEspacialService _service;
 
-        public DetritosEspaciaisController(SatGuardDbContext context)
+        public DetritosEspaciaisController(IDetritoEspacialService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DetritoEspacialResponseDTO>>> GetDetritosEspaciais()
         {
-            var detritos = await _context.DetritosEspaciais.ToListAsync();
-            var response = detritos.Select(d => new DetritoEspacialResponseDTO
-            {
-                DetritoId = d.DetritoId,
-                DetritoTamanho = d.DetritoTamanho,
-                DetritoRiscoColisao = d.DetritoRiscoColisao,
-                DetritoVelocidade = d.DetritoVelocidade,
-                OrbitaId = d.OrbitaId
-            }).ToList();
-
+            var response = await _service.GetDetritosEspaciaisAsync();
             return Ok(response);
         }
 
@@ -41,26 +30,7 @@ namespace SpaceSense.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var detrito = new DetritoEspacial
-            {
-                DetritoTamanho = request.DetritoTamanho,
-                DetritoRiscoColisao = request.DetritoRiscoColisao,
-                DetritoVelocidade = request.DetritoVelocidade,
-                OrbitaId = request.OrbitaId
-            };
-
-            _context.DetritosEspaciais.Add(detrito);
-            await _context.SaveChangesAsync();
-
-            var response = new DetritoEspacialResponseDTO
-            {
-                DetritoId = detrito.DetritoId,
-                DetritoTamanho = detrito.DetritoTamanho,
-                DetritoRiscoColisao = detrito.DetritoRiscoColisao,
-                DetritoVelocidade = detrito.DetritoVelocidade,
-                OrbitaId = detrito.OrbitaId
-            };
-
+            var response = await _service.CreateDetritoEspacialAsync(request);
             return CreatedAtAction(nameof(GetDetritosEspaciais), new { id = response.DetritoId }, response);
         }
     }

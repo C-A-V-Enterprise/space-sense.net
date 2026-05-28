@@ -15,6 +15,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<SatGuardDbContext>(options =>
     options.UseSqlite("Data Source=satguard.db"));
 
+// Registro de Injeção de Dependência para a Clean Architecture
+builder.Services.AddScoped(typeof(SpaceSense.Api.Repositories.IRepository<>), typeof(SpaceSense.Api.Repositories.Repository<>));
+builder.Services.AddScoped<SpaceSense.Api.Services.IEmpresaService, SpaceSense.Api.Services.EmpresaService>();
+builder.Services.AddScoped<SpaceSense.Api.Services.IOrbitaService, SpaceSense.Api.Services.OrbitaService>();
+builder.Services.AddScoped<SpaceSense.Api.Services.ISateliteService, SpaceSense.Api.Services.SateliteService>();
+builder.Services.AddScoped<SpaceSense.Api.Services.IDetritoEspacialService, SpaceSense.Api.Services.DetritoEspacialService>();
+builder.Services.AddScoped<SpaceSense.Api.Services.IPlataformaService, SpaceSense.Api.Services.PlataformaService>();
+builder.Services.AddScoped<SpaceSense.Api.Services.IAlertaService, SpaceSense.Api.Services.AlertaService>();
+builder.Services.AddScoped<SpaceSense.Api.Services.IUsuarioService, SpaceSense.Api.Services.UsuarioService>();
+
 var app = builder.Build();
 
 // Redireciona a raiz para o Swagger automaticamente

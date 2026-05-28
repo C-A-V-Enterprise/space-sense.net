@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpaceSense.Api.Data;
 using SpaceSense.Api.DTOs;
-using SpaceSense.Api.Models;
+using SpaceSense.Api.Services;
 
 namespace SpaceSense.Api.Controllers
 {
@@ -10,24 +8,17 @@ namespace SpaceSense.Api.Controllers
     [ApiController]
     public class PlataformasController : ControllerBase
     {
-        private readonly SatGuardDbContext _context;
+        private readonly IPlataformaService _service;
 
-        public PlataformasController(SatGuardDbContext context)
+        public PlataformasController(IPlataformaService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlataformaResponseDTO>>> GetPlataformas()
         {
-            var plataformas = await _context.Plataformas.ToListAsync();
-            var response = plataformas.Select(p => new PlataformaResponseDTO
-            {
-                PlataformaId = p.PlataformaId,
-                PlataformaNome = p.PlataformaNome,
-                PlataformaStatus = p.PlataformaStatus
-            }).ToList();
-
+            var response = await _service.GetPlataformasAsync();
             return Ok(response);
         }
 
@@ -39,22 +30,7 @@ namespace SpaceSense.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var plataforma = new Plataforma
-            {
-                PlataformaNome = request.PlataformaNome,
-                PlataformaStatus = request.PlataformaStatus
-            };
-
-            _context.Plataformas.Add(plataforma);
-            await _context.SaveChangesAsync();
-
-            var response = new PlataformaResponseDTO
-            {
-                PlataformaId = plataforma.PlataformaId,
-                PlataformaNome = plataforma.PlataformaNome,
-                PlataformaStatus = plataforma.PlataformaStatus
-            };
-
+            var response = await _service.CreatePlataformaAsync(request);
             return CreatedAtAction(nameof(GetPlataformas), new { id = response.PlataformaId }, response);
         }
     }
