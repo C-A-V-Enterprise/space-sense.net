@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpaceSense.Api.Data;
+using SpaceSense.Api.DTOs;
 using SpaceSense.Api.Models;
 
 namespace SpaceSense.Api.Controllers
@@ -17,31 +18,53 @@ namespace SpaceSense.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Alerta>>> GetAlertas()
+        public async Task<ActionResult<IEnumerable<AlertaResponseDTO>>> GetAlertas()
         {
-            return await _context.Alertas.Include(a => a.Satelite).Include(a => a.Plataforma).ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Alerta>> GetAlerta(int id)
-        {
-            var alerta = await _context.Alertas.Include(a => a.Satelite).Include(a => a.Plataforma).FirstOrDefaultAsync(a => a.AlertaId == id);
-
-            if (alerta == null)
+            var alertas = await _context.Alertas.ToListAsync();
+            var response = alertas.Select(a => new AlertaResponseDTO
             {
-                return NotFound();
-            }
+                AlertaId = a.AlertaId,
+                AlertaNivel = a.AlertaNivel,
+                AlertaDescricao = a.AlertaDescricao,
+                AlertaData = a.AlertaData,
+                SateliteId = a.SateliteId,
+                PlataformaId = a.PlataformaId
+            }).ToList();
 
-            return alerta;
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Alerta>> PostAlerta(Alerta alerta)
+        public async Task<ActionResult<AlertaResponseDTO>> PostAlerta(AlertaRequestDTO request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var alerta = new Alerta
+            {
+                AlertaNivel = request.AlertaNivel,
+                AlertaDescricao = request.AlertaDescricao,
+                AlertaData = request.AlertaData,
+                SateliteId = request.SateliteId,
+                PlataformaId = request.PlataformaId
+            };
+
             _context.Alertas.Add(alerta);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetAlerta), new { id = alerta.AlertaId }, alerta);
+            var response = new AlertaResponseDTO
+            {
+                AlertaId = alerta.AlertaId,
+                AlertaNivel = alerta.AlertaNivel,
+                AlertaDescricao = alerta.AlertaDescricao,
+                AlertaData = alerta.AlertaData,
+                SateliteId = alerta.SateliteId,
+                PlataformaId = alerta.PlataformaId
+            };
+
+            return CreatedAtAction(nameof(GetAlertas), new { id = response.AlertaId }, response);
         }
     }
 }

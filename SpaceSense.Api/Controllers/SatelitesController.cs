@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpaceSense.Api.Data;
+using SpaceSense.Api.DTOs;
 using SpaceSense.Api.Models;
 
 namespace SpaceSense.Api.Controllers
@@ -17,80 +18,59 @@ namespace SpaceSense.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Satelite>>> GetSatelites()
+        public async Task<ActionResult<IEnumerable<SateliteResponseDTO>>> GetSatelites()
         {
-            return await _context.Satelites.Include(s => s.Empresa).Include(s => s.Orbita).ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Satelite>> GetSatelite(int id)
-        {
-            var satelite = await _context.Satelites.Include(s => s.Empresa).Include(s => s.Orbita).FirstOrDefaultAsync(s => s.SateliteId == id);
-
-            if (satelite == null)
+            var satelites = await _context.Satelites.ToListAsync();
+            var response = satelites.Select(s => new SateliteResponseDTO
             {
-                return NotFound();
-            }
+                SateliteId = s.SateliteId,
+                SateliteNome = s.SateliteNome,
+                SateliteFuncao = s.SateliteFuncao,
+                SateliteStatus = s.SateliteStatus,
+                SateliteDataLancamento = s.SateliteDataLancamento,
+                SateliteVelocidade = s.SateliteVelocidade,
+                EmpresaId = s.EmpresaId,
+                OrbitaId = s.OrbitaId
+            }).ToList();
 
-            return satelite;
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Satelite>> PostSatelite(Satelite satelite)
+        public async Task<ActionResult<SateliteResponseDTO>> PostSatelite(SateliteRequestDTO request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var satelite = new Satelite
+            {
+                SateliteNome = request.SateliteNome,
+                SateliteFuncao = request.SateliteFuncao,
+                SateliteStatus = request.SateliteStatus,
+                SateliteDataLancamento = request.SateliteDataLancamento,
+                SateliteVelocidade = request.SateliteVelocidade,
+                EmpresaId = request.EmpresaId,
+                OrbitaId = request.OrbitaId
+            };
+
             _context.Satelites.Add(satelite);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetSatelite), new { id = satelite.SateliteId }, satelite);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSatelite(int id, Satelite satelite)
-        {
-            if (id != satelite.SateliteId)
+            var response = new SateliteResponseDTO
             {
-                return BadRequest();
-            }
+                SateliteId = satelite.SateliteId,
+                SateliteNome = satelite.SateliteNome,
+                SateliteFuncao = satelite.SateliteFuncao,
+                SateliteStatus = satelite.SateliteStatus,
+                SateliteDataLancamento = satelite.SateliteDataLancamento,
+                SateliteVelocidade = satelite.SateliteVelocidade,
+                EmpresaId = satelite.EmpresaId,
+                OrbitaId = satelite.OrbitaId
+            };
 
-            _context.Entry(satelite).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SateliteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSatelite(int id)
-        {
-            var satelite = await _context.Satelites.FindAsync(id);
-            if (satelite == null)
-            {
-                return NotFound();
-            }
-
-            _context.Satelites.Remove(satelite);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool SateliteExists(int id)
-        {
-            return _context.Satelites.Any(e => e.SateliteId == id);
+            return CreatedAtAction(nameof(GetSatelites), new { id = response.SateliteId }, response);
         }
     }
 }

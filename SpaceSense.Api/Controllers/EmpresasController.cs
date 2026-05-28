@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpaceSense.Api.Data;
+using SpaceSense.Api.DTOs;
 using SpaceSense.Api.Models;
 
 namespace SpaceSense.Api.Controllers
@@ -17,17 +18,44 @@ namespace SpaceSense.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Empresa>>> GetEmpresas()
+        public async Task<ActionResult<IEnumerable<EmpresaResponseDTO>>> GetEmpresas()
         {
-            return await _context.Empresas.ToListAsync();
+            var empresas = await _context.Empresas.ToListAsync();
+            var response = empresas.Select(e => new EmpresaResponseDTO
+            {
+                EmpresaId = e.EmpresaId,
+                EmpresaNome = e.EmpresaNome,
+                EmpresaPais = e.EmpresaPais
+            }).ToList();
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Empresa>> PostEmpresa(Empresa empresa)
+        public async Task<ActionResult<EmpresaResponseDTO>> PostEmpresa(EmpresaRequestDTO request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var empresa = new Empresa
+            {
+                EmpresaNome = request.EmpresaNome,
+                EmpresaPais = request.EmpresaPais
+            };
+
             _context.Empresas.Add(empresa);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetEmpresas), new { id = empresa.EmpresaId }, empresa);
+
+            var response = new EmpresaResponseDTO
+            {
+                EmpresaId = empresa.EmpresaId,
+                EmpresaNome = empresa.EmpresaNome,
+                EmpresaPais = empresa.EmpresaPais
+            };
+
+            return CreatedAtAction(nameof(GetEmpresas), new { id = response.EmpresaId }, response);
         }
     }
 }

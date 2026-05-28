@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpaceSense.Api.Data;
+using SpaceSense.Api.DTOs;
 using SpaceSense.Api.Models;
 
 namespace SpaceSense.Api.Controllers
@@ -17,17 +18,50 @@ namespace SpaceSense.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DetritoEspacial>>> GetDetritosEspaciais()
+        public async Task<ActionResult<IEnumerable<DetritoEspacialResponseDTO>>> GetDetritosEspaciais()
         {
-            return await _context.DetritosEspaciais.Include(d => d.Orbita).ToListAsync();
+            var detritos = await _context.DetritosEspaciais.ToListAsync();
+            var response = detritos.Select(d => new DetritoEspacialResponseDTO
+            {
+                DetritoId = d.DetritoId,
+                DetritoTamanho = d.DetritoTamanho,
+                DetritoRiscoColisao = d.DetritoRiscoColisao,
+                DetritoVelocidade = d.DetritoVelocidade,
+                OrbitaId = d.OrbitaId
+            }).ToList();
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<ActionResult<DetritoEspacial>> PostDetritoEspacial(DetritoEspacial detrito)
+        public async Task<ActionResult<DetritoEspacialResponseDTO>> PostDetritoEspacial(DetritoEspacialRequestDTO request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var detrito = new DetritoEspacial
+            {
+                DetritoTamanho = request.DetritoTamanho,
+                DetritoRiscoColisao = request.DetritoRiscoColisao,
+                DetritoVelocidade = request.DetritoVelocidade,
+                OrbitaId = request.OrbitaId
+            };
+
             _context.DetritosEspaciais.Add(detrito);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetDetritosEspaciais), new { id = detrito.DetritoId }, detrito);
+
+            var response = new DetritoEspacialResponseDTO
+            {
+                DetritoId = detrito.DetritoId,
+                DetritoTamanho = detrito.DetritoTamanho,
+                DetritoRiscoColisao = detrito.DetritoRiscoColisao,
+                DetritoVelocidade = detrito.DetritoVelocidade,
+                OrbitaId = detrito.OrbitaId
+            };
+
+            return CreatedAtAction(nameof(GetDetritosEspaciais), new { id = response.DetritoId }, response);
         }
     }
 }
