@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-// Configura o DbContext em memória. Substitua por UseOracle no momento de produção com as credenciais.
+// Configura o DbContext utilizando SQLite para persistência relacional e suporte a Migrations.
 builder.Services.AddDbContext<SatGuardDbContext>(options =>
-    options.UseInMemoryDatabase("SatGuardDb"));
+    options.UseSqlite("Data Source=satguard.db"));
 
 var app = builder.Build();
 
