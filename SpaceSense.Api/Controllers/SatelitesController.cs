@@ -31,7 +31,36 @@ namespace SpaceSense.Api.Controllers
             }
 
             var response = await _service.CreateSateliteAsync(request);
-            return CreatedAtAction(nameof(GetSatelites), new { id = response.SateliteId }, response);
+            return CreatedAtAction(nameof(GetSatelite), new { id = response.SateliteId }, response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<SateliteResponseDTO>> GetSatelite(int id)
+        {
+            var response = await _service.GetSateliteByIdAsync(id);
+            if (response == null) return NotFound();
+            return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<SateliteResponseDTO>> PutSatelite(int id, SateliteRequestDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = await _service.UpdateSateliteAsync(id, request);
+            if (response == null) return NotFound();
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSatelite(int id)
+        {
+            var deleted = await _service.DeleteSateliteAsync(id);
+            if (!deleted) return NotFound();
+            return NoContent();
         }
     }
 }

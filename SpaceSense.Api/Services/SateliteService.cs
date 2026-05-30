@@ -56,5 +56,60 @@ namespace SpaceSense.Api.Services
                 OrbitaId = satelite.OrbitaId
             };
         }
+
+        public async Task<SateliteResponseDTO?> GetSateliteByIdAsync(int id)
+        {
+            var s = await _repository.GetByIdAsync(id);
+            if (s == null) return null;
+
+            return new SateliteResponseDTO
+            {
+                SateliteId = s.SateliteId,
+                SateliteNome = s.SateliteNome,
+                SateliteFuncao = s.SateliteFuncao,
+                SateliteStatus = s.SateliteStatus,
+                SateliteDataLancamento = s.SateliteDataLancamento,
+                SateliteVelocidade = s.SateliteVelocidade,
+                EmpresaId = s.EmpresaId,
+                OrbitaId = s.OrbitaId
+            };
+        }
+
+        public async Task<SateliteResponseDTO?> UpdateSateliteAsync(int id, SateliteRequestDTO request)
+        {
+            var satelite = await _repository.GetByIdAsync(id);
+            if (satelite == null) return null;
+
+            satelite.SateliteNome = request.SateliteNome;
+            satelite.SateliteFuncao = request.SateliteFuncao;
+            satelite.SateliteStatus = request.SateliteStatus;
+            satelite.SateliteDataLancamento = request.SateliteDataLancamento;
+            satelite.SateliteVelocidade = request.SateliteVelocidade;
+            satelite.EmpresaId = request.EmpresaId;
+            satelite.OrbitaId = request.OrbitaId;
+
+            await _repository.UpdateAsync(satelite);
+
+            return new SateliteResponseDTO
+            {
+                SateliteId = satelite.SateliteId,
+                SateliteNome = satelite.SateliteNome,
+                SateliteFuncao = satelite.SateliteFuncao,
+                SateliteStatus = satelite.SateliteStatus,
+                SateliteDataLancamento = satelite.SateliteDataLancamento,
+                SateliteVelocidade = satelite.SateliteVelocidade,
+                EmpresaId = satelite.EmpresaId,
+                OrbitaId = satelite.OrbitaId
+            };
+        }
+
+        public async Task<bool> DeleteSateliteAsync(int id)
+        {
+            var satelite = await _repository.GetByIdAsync(id);
+            if (satelite == null) return false;
+
+            await _repository.DeleteAsync(id);
+            return true;
+        }
     }
 }

@@ -41,5 +41,45 @@ namespace SpaceSense.Api.Services
                 EmpresaPais = empresa.EmpresaPais
             };
         }
+
+        public async Task<EmpresaResponseDTO?> GetEmpresaByIdAsync(int id)
+        {
+            var e = await _repository.GetByIdAsync(id);
+            if (e == null) return null;
+
+            return new EmpresaResponseDTO
+            {
+                EmpresaId = e.EmpresaId,
+                EmpresaNome = e.EmpresaNome,
+                EmpresaPais = e.EmpresaPais
+            };
+        }
+
+        public async Task<EmpresaResponseDTO?> UpdateEmpresaAsync(int id, EmpresaRequestDTO request)
+        {
+            var empresa = await _repository.GetByIdAsync(id);
+            if (empresa == null) return null;
+
+            empresa.EmpresaNome = request.EmpresaNome;
+            empresa.EmpresaPais = request.EmpresaPais;
+
+            await _repository.UpdateAsync(empresa);
+
+            return new EmpresaResponseDTO
+            {
+                EmpresaId = empresa.EmpresaId,
+                EmpresaNome = empresa.EmpresaNome,
+                EmpresaPais = empresa.EmpresaPais
+            };
+        }
+
+        public async Task<bool> DeleteEmpresaAsync(int id)
+        {
+            var empresa = await _repository.GetByIdAsync(id);
+            if (empresa == null) return false;
+
+            await _repository.DeleteAsync(id);
+            return true;
+        }
     }
 }
