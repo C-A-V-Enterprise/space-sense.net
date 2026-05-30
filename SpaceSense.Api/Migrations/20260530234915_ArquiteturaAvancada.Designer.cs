@@ -11,14 +11,14 @@ using SpaceSense.Api.Data;
 namespace SpaceSense.Api.Migrations
 {
     [DbContext(typeof(SatGuardDbContext))]
-    [Migration("20260528115831_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260530234915_ArquiteturaAvancada")]
+    partial class ArquiteturaAvancada
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
             modelBuilder.Entity("SpaceSense.Api.Models.Alerta", b =>
                 {
@@ -60,36 +60,6 @@ namespace SpaceSense.Api.Migrations
                     b.ToTable("ALERTAS");
                 });
 
-            modelBuilder.Entity("SpaceSense.Api.Models.DetritoEspacial", b =>
-                {
-                    b.Property<int>("DetritoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("detrito_id");
-
-                    b.Property<decimal>("DetritoRiscoColisao")
-                        .HasColumnType("decimal(5, 2)")
-                        .HasColumnName("detrito_risco_colisao");
-
-                    b.Property<decimal>("DetritoTamanho")
-                        .HasColumnType("decimal(4, 1)")
-                        .HasColumnName("detrito_tamanho");
-
-                    b.Property<decimal>("DetritoVelocidade")
-                        .HasColumnType("decimal(10, 2)")
-                        .HasColumnName("detrito_velocidade");
-
-                    b.Property<int>("OrbitaId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("orbita_id");
-
-                    b.HasKey("DetritoId");
-
-                    b.HasIndex("OrbitaId");
-
-                    b.ToTable("DETRITO_ESPACIAL");
-                });
-
             modelBuilder.Entity("SpaceSense.Api.Models.Empresa", b =>
                 {
                     b.Property<int>("EmpresaId")
@@ -112,6 +82,30 @@ namespace SpaceSense.Api.Migrations
                     b.HasKey("EmpresaId");
 
                     b.ToTable("EMPRESAS");
+                });
+
+            modelBuilder.Entity("SpaceSense.Api.Models.ObjetoEspacial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("objeto_id");
+
+                    b.Property<int>("OrbitaId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("orbita_id");
+
+                    b.Property<decimal>("Velocidade")
+                        .HasColumnType("decimal(10, 2)")
+                        .HasColumnName("velocidade");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrbitaId");
+
+                    b.ToTable("ObjetosEspaciais");
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("SpaceSense.Api.Models.Orbita", b =>
@@ -164,56 +158,6 @@ namespace SpaceSense.Api.Migrations
                     b.ToTable("PLATAFORMA");
                 });
 
-            modelBuilder.Entity("SpaceSense.Api.Models.Satelite", b =>
-                {
-                    b.Property<int>("SateliteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("satelite_id");
-
-                    b.Property<int>("EmpresaId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("empresa_id");
-
-                    b.Property<int>("OrbitaId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("orbita_id");
-
-                    b.Property<DateTime>("SateliteDataLancamento")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("satelite_data_lancamento");
-
-                    b.Property<string>("SateliteFuncao")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("satelite_funcao");
-
-                    b.Property<string>("SateliteNome")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("satelite_nome");
-
-                    b.Property<string>("SateliteStatus")
-                        .IsRequired()
-                        .HasMaxLength(1)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("satelite_status");
-
-                    b.Property<decimal>("SateliteVelocidade")
-                        .HasColumnType("decimal(10, 2)")
-                        .HasColumnName("satelite_velocidade");
-
-                    b.HasKey("SateliteId");
-
-                    b.HasIndex("EmpresaId");
-
-                    b.HasIndex("OrbitaId");
-
-                    b.ToTable("SATELITES");
-                });
-
             modelBuilder.Entity("SpaceSense.Api.Models.Usuario", b =>
                 {
                     b.Property<int>("UsuarioId")
@@ -256,6 +200,56 @@ namespace SpaceSense.Api.Migrations
                     b.ToTable("USUARIOS");
                 });
 
+            modelBuilder.Entity("SpaceSense.Api.Models.DetritoEspacial", b =>
+                {
+                    b.HasBaseType("SpaceSense.Api.Models.ObjetoEspacial");
+
+                    b.Property<decimal>("DetritoRiscoColisao")
+                        .HasColumnType("decimal(5, 2)")
+                        .HasColumnName("detrito_risco_colisao");
+
+                    b.Property<decimal>("DetritoTamanho")
+                        .HasColumnType("decimal(4, 1)")
+                        .HasColumnName("detrito_tamanho");
+
+                    b.ToTable("DETRITO_ESPACIAL");
+                });
+
+            modelBuilder.Entity("SpaceSense.Api.Models.Satelite", b =>
+                {
+                    b.HasBaseType("SpaceSense.Api.Models.ObjetoEspacial");
+
+                    b.Property<int>("EmpresaId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("empresa_id");
+
+                    b.Property<DateTime>("SateliteDataLancamento")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("satelite_data_lancamento");
+
+                    b.Property<string>("SateliteFuncao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("satelite_funcao");
+
+                    b.Property<string>("SateliteNome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("satelite_nome");
+
+                    b.Property<string>("SateliteStatus")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("satelite_status");
+
+                    b.HasIndex("EmpresaId");
+
+                    b.ToTable("SATELITES");
+                });
+
             modelBuilder.Entity("SpaceSense.Api.Models.Alerta", b =>
                 {
                     b.HasOne("SpaceSense.Api.Models.Plataforma", "Plataforma")
@@ -275,32 +269,55 @@ namespace SpaceSense.Api.Migrations
                     b.Navigation("Satelite");
                 });
 
-            modelBuilder.Entity("SpaceSense.Api.Models.DetritoEspacial", b =>
+            modelBuilder.Entity("SpaceSense.Api.Models.Empresa", b =>
                 {
-                    b.HasOne("SpaceSense.Api.Models.Orbita", "Orbita")
-                        .WithMany()
-                        .HasForeignKey("OrbitaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("SpaceSense.Api.Models.Endereco", "EnderecoSede", b1 =>
+                        {
+                            b1.Property<int>("EmpresaId")
+                                .HasColumnType("INTEGER");
 
-                    b.Navigation("Orbita");
+                            b1.Property<string>("Cep")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("endereco_cep");
+
+                            b1.Property<string>("Cidade")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("endereco_cidade");
+
+                            b1.Property<string>("Estado")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("endereco_estado");
+
+                            b1.Property<string>("Rua")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("endereco_rua");
+
+                            b1.HasKey("EmpresaId");
+
+                            b1.ToTable("EMPRESAS");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EmpresaId");
+                        });
+
+                    b.Navigation("EnderecoSede");
                 });
 
-            modelBuilder.Entity("SpaceSense.Api.Models.Satelite", b =>
+            modelBuilder.Entity("SpaceSense.Api.Models.ObjetoEspacial", b =>
                 {
-                    b.HasOne("SpaceSense.Api.Models.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("EmpresaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SpaceSense.Api.Models.Orbita", "Orbita")
                         .WithMany()
                         .HasForeignKey("OrbitaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Empresa");
 
                     b.Navigation("Orbita");
                 });
@@ -314,6 +331,32 @@ namespace SpaceSense.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Plataforma");
+                });
+
+            modelBuilder.Entity("SpaceSense.Api.Models.DetritoEspacial", b =>
+                {
+                    b.HasOne("SpaceSense.Api.Models.ObjetoEspacial", null)
+                        .WithOne()
+                        .HasForeignKey("SpaceSense.Api.Models.DetritoEspacial", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SpaceSense.Api.Models.Satelite", b =>
+                {
+                    b.HasOne("SpaceSense.Api.Models.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("EmpresaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SpaceSense.Api.Models.ObjetoEspacial", null)
+                        .WithOne()
+                        .HasForeignKey("SpaceSense.Api.Models.Satelite", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Empresa");
                 });
 #pragma warning restore 612, 618
         }

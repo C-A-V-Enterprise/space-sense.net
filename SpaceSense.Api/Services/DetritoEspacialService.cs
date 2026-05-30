@@ -18,10 +18,10 @@ namespace SpaceSense.Api.Services
             var detritos = await _repository.GetAllAsync();
             return detritos.Select(d => new DetritoEspacialResponseDTO
             {
-                DetritoId = d.DetritoId,
+                DetritoId = d.Id,
                 DetritoTamanho = d.DetritoTamanho,
                 DetritoRiscoColisao = d.DetritoRiscoColisao,
-                DetritoVelocidade = d.DetritoVelocidade,
+                DetritoVelocidade = d.Velocidade,
                 OrbitaId = d.OrbitaId
             });
         }
@@ -32,7 +32,7 @@ namespace SpaceSense.Api.Services
             {
                 DetritoTamanho = request.DetritoTamanho,
                 DetritoRiscoColisao = request.DetritoRiscoColisao,
-                DetritoVelocidade = request.DetritoVelocidade,
+                Velocidade = request.DetritoVelocidade,
                 OrbitaId = request.OrbitaId
             };
 
@@ -40,10 +40,10 @@ namespace SpaceSense.Api.Services
 
             return new DetritoEspacialResponseDTO
             {
-                DetritoId = detrito.DetritoId,
+                DetritoId = detrito.Id,
                 DetritoTamanho = detrito.DetritoTamanho,
                 DetritoRiscoColisao = detrito.DetritoRiscoColisao,
-                DetritoVelocidade = detrito.DetritoVelocidade,
+                DetritoVelocidade = detrito.Velocidade,
                 OrbitaId = detrito.OrbitaId
             };
         }

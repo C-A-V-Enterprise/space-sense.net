@@ -20,7 +20,11 @@ namespace SpaceSense.Api.Services
             {
                 EmpresaId = e.EmpresaId,
                 EmpresaNome = e.EmpresaNome,
-                EmpresaPais = e.EmpresaPais
+                EmpresaPais = e.EmpresaPais,
+                EnderecoRua = e.EnderecoSede?.Rua,
+                EnderecoCidade = e.EnderecoSede?.Cidade,
+                EnderecoEstado = e.EnderecoSede?.Estado,
+                EnderecoCep = e.EnderecoSede?.Cep
             });
         }
 
@@ -29,7 +33,14 @@ namespace SpaceSense.Api.Services
             var empresa = new Empresa
             {
                 EmpresaNome = request.EmpresaNome,
-                EmpresaPais = request.EmpresaPais
+                EmpresaPais = request.EmpresaPais,
+                EnderecoSede = new Endereco
+                {
+                    Rua = request.EnderecoRua ?? string.Empty,
+                    Cidade = request.EnderecoCidade ?? string.Empty,
+                    Estado = request.EnderecoEstado ?? string.Empty,
+                    Cep = request.EnderecoCep ?? string.Empty
+                }
             };
 
             await _repository.AddAsync(empresa);
@@ -38,7 +49,11 @@ namespace SpaceSense.Api.Services
             {
                 EmpresaId = empresa.EmpresaId,
                 EmpresaNome = empresa.EmpresaNome,
-                EmpresaPais = empresa.EmpresaPais
+                EmpresaPais = empresa.EmpresaPais,
+                EnderecoRua = empresa.EnderecoSede?.Rua,
+                EnderecoCidade = empresa.EnderecoSede?.Cidade,
+                EnderecoEstado = empresa.EnderecoSede?.Estado,
+                EnderecoCep = empresa.EnderecoSede?.Cep
             };
         }
 
@@ -51,7 +66,11 @@ namespace SpaceSense.Api.Services
             {
                 EmpresaId = e.EmpresaId,
                 EmpresaNome = e.EmpresaNome,
-                EmpresaPais = e.EmpresaPais
+                EmpresaPais = e.EmpresaPais,
+                EnderecoRua = e.EnderecoSede?.Rua,
+                EnderecoCidade = e.EnderecoSede?.Cidade,
+                EnderecoEstado = e.EnderecoSede?.Estado,
+                EnderecoCep = e.EnderecoSede?.Cep
             };
         }
 
@@ -63,13 +82,26 @@ namespace SpaceSense.Api.Services
             empresa.EmpresaNome = request.EmpresaNome;
             empresa.EmpresaPais = request.EmpresaPais;
 
+            if (empresa.EnderecoSede == null)
+            {
+                empresa.EnderecoSede = new Endereco();
+            }
+            empresa.EnderecoSede.Rua = request.EnderecoRua ?? string.Empty;
+            empresa.EnderecoSede.Cidade = request.EnderecoCidade ?? string.Empty;
+            empresa.EnderecoSede.Estado = request.EnderecoEstado ?? string.Empty;
+            empresa.EnderecoSede.Cep = request.EnderecoCep ?? string.Empty;
+
             await _repository.UpdateAsync(empresa);
 
             return new EmpresaResponseDTO
             {
                 EmpresaId = empresa.EmpresaId,
                 EmpresaNome = empresa.EmpresaNome,
-                EmpresaPais = empresa.EmpresaPais
+                EmpresaPais = empresa.EmpresaPais,
+                EnderecoRua = empresa.EnderecoSede?.Rua,
+                EnderecoCidade = empresa.EnderecoSede?.Cidade,
+                EnderecoEstado = empresa.EnderecoSede?.Estado,
+                EnderecoCep = empresa.EnderecoSede?.Cep
             };
         }
 

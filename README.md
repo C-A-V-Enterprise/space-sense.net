@@ -14,13 +14,15 @@ A inovação deste projeto baseia-se na proteção do ecossistema espacial (Econ
 
 - **Link do Vídeo de Apresentação (Pitch):** [Apresentação YouTube](COLAR_SEU_LINK_AQUI)
 
-## 🏗️ Arquitetura e Boas Práticas (Desenvolvimento)
+## 🏗️ Arquitetura Sênior (Desenvolvimento Avançado)
 
-O projeto atende a estritas boas práticas de programação e arquitetura exigidas no mercado:
-- **Padrão DTO (Data Transfer Objects):** A API não expõe diretamente os modelos do banco de dados. Todas as requisições passam por classes `[Model]RequestDTO` e `[Model]ResponseDTO` para garantir segurança e isolamento.
-- **Camada de Serviços e Repositórios:** Implementamos o padrão `Repository` genérico e injetamos as regras de negócio nos `Services`, garantindo que os Controllers fiquem extremamente limpos.
-- **Validações Rigorosas:** Os DTOs implementam validações complexas com *Data Annotations* (ex: `[Required]`, `[StringLength]`, `[Range]`) para rejeitar dados inválidos automaticamente (Erro 400).
-- **CRUD Completo de Ponta a Ponta:** Os controladores (`SatelitesController`, `EmpresasController`, etc.) possuem `GET`, `GET por ID`, `POST`, `PUT` e `DELETE`.
+O projeto atende a estritas boas práticas de programação e arquitetura exigidas no mercado, espelhando complexidades avançadas:
+- **Padrão de Camadas (Clean Architecture):** Divisão lógica em Controllers, Services, Repositories e Models.
+- **Segurança (JWT Bearer):** Autenticação robusta nas rotas de CRUD.
+- **Herança no EF Core:** Utilização do padrão TPT (Table-Per-Type) com a classe base `ObjetoEspacial`.
+- **Value Objects:** Uso de `[Owned]` types para separar o `Endereco` dentro de `Empresa`.
+- **Injeção de Dependência:** O padrão `IRepository<T>` foi implementado para flexibilidade.
+- **DTOs:** Entrada e saída isoladas das entidades do banco.
 
 ## 📊 Diagrama do Banco de Dados
 
@@ -77,6 +79,18 @@ Para rodar o projeto localmente e acessar a documentação interativa:
    ```
 
 A API conta com a interface visual do **Swagger UI** integrada e configurada para redirecionamento automático!
+### 1. Testando pelo Swagger
+Para testar os endpoints restritos (POST, PUT, DELETE), você deve primeiro gerar o Token JWT:
+1. Abra a rota `POST /api/Usuarios/login`.
+2. Utilize o payload:
+   ```json
+   {
+     "email": "admin@satguard.com",
+     "senha": "123456"
+   }
+   ```
+3. Copie o token retornado.
+4. Vá até o topo do Swagger, clique em **Authorize** e insira o token na caixa. Pronto! Você está logado.
 - Assim que o `dotnet run` iniciar, acesse o link gerado no seu terminal no navegador (geralmente `http://localhost:5222`).
 - Você será automaticamente redirecionado para `http://localhost:5222/swagger`.
 

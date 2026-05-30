@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SpaceSense.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class ArquiteturaAvancada : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,11 @@ namespace SpaceSense.Api.Migrations
                     empresa_id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     empresa_nome = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    empresa_pais = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    empresa_pais = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    endereco_rua = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    endereco_cidade = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    endereco_estado = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    endereco_cep = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,52 +59,19 @@ namespace SpaceSense.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DETRITO_ESPACIAL",
+                name: "ObjetosEspaciais",
                 columns: table => new
                 {
-                    detrito_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    objeto_id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    detrito_tamanho = table.Column<decimal>(type: "decimal(4, 1)", nullable: false),
-                    detrito_risco_colisao = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
-                    detrito_velocidade = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
+                    velocidade = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
                     orbita_id = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DETRITO_ESPACIAL", x => x.detrito_id);
+                    table.PrimaryKey("PK_ObjetosEspaciais", x => x.objeto_id);
                     table.ForeignKey(
-                        name: "FK_DETRITO_ESPACIAL_ORBITAS_orbita_id",
-                        column: x => x.orbita_id,
-                        principalTable: "ORBITAS",
-                        principalColumn: "orbita_id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SATELITES",
-                columns: table => new
-                {
-                    satelite_id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    satelite_nome = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    satelite_funcao = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    satelite_status = table.Column<string>(type: "TEXT", maxLength: 1, nullable: false),
-                    satelite_data_lancamento = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    satelite_velocidade = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
-                    empresa_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    orbita_id = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SATELITES", x => x.satelite_id);
-                    table.ForeignKey(
-                        name: "FK_SATELITES_EMPRESAS_empresa_id",
-                        column: x => x.empresa_id,
-                        principalTable: "EMPRESAS",
-                        principalColumn: "empresa_id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SATELITES_ORBITAS_orbita_id",
+                        name: "FK_ObjetosEspaciais_ORBITAS_orbita_id",
                         column: x => x.orbita_id,
                         principalTable: "ORBITAS",
                         principalColumn: "orbita_id",
@@ -131,6 +102,55 @@ namespace SpaceSense.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DETRITO_ESPACIAL",
+                columns: table => new
+                {
+                    objeto_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    detrito_tamanho = table.Column<decimal>(type: "decimal(4, 1)", nullable: false),
+                    detrito_risco_colisao = table.Column<decimal>(type: "decimal(5, 2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DETRITO_ESPACIAL", x => x.objeto_id);
+                    table.ForeignKey(
+                        name: "FK_DETRITO_ESPACIAL_ObjetosEspaciais_objeto_id",
+                        column: x => x.objeto_id,
+                        principalTable: "ObjetosEspaciais",
+                        principalColumn: "objeto_id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SATELITES",
+                columns: table => new
+                {
+                    objeto_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    satelite_nome = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    satelite_funcao = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    satelite_status = table.Column<string>(type: "TEXT", maxLength: 1, nullable: false),
+                    satelite_data_lancamento = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    empresa_id = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SATELITES", x => x.objeto_id);
+                    table.ForeignKey(
+                        name: "FK_SATELITES_EMPRESAS_empresa_id",
+                        column: x => x.empresa_id,
+                        principalTable: "EMPRESAS",
+                        principalColumn: "empresa_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SATELITES_ObjetosEspaciais_objeto_id",
+                        column: x => x.objeto_id,
+                        principalTable: "ObjetosEspaciais",
+                        principalColumn: "objeto_id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ALERTAS",
                 columns: table => new
                 {
@@ -155,7 +175,7 @@ namespace SpaceSense.Api.Migrations
                         name: "FK_ALERTAS_SATELITES_satelite_id",
                         column: x => x.satelite_id,
                         principalTable: "SATELITES",
-                        principalColumn: "satelite_id",
+                        principalColumn: "objeto_id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -170,19 +190,14 @@ namespace SpaceSense.Api.Migrations
                 column: "satelite_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DETRITO_ESPACIAL_orbita_id",
-                table: "DETRITO_ESPACIAL",
+                name: "IX_ObjetosEspaciais_orbita_id",
+                table: "ObjetosEspaciais",
                 column: "orbita_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SATELITES_empresa_id",
                 table: "SATELITES",
                 column: "empresa_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SATELITES_orbita_id",
-                table: "SATELITES",
-                column: "orbita_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_USUARIOS_plataforma_id",
@@ -210,6 +225,9 @@ namespace SpaceSense.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "EMPRESAS");
+
+            migrationBuilder.DropTable(
+                name: "ObjetosEspaciais");
 
             migrationBuilder.DropTable(
                 name: "ORBITAS");

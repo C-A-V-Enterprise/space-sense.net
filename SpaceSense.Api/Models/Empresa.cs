@@ -17,5 +17,7 @@ namespace SpaceSense.Api.Models
         [Column("empresa_pais")]
         [StringLength(50)]
         public string EmpresaPais { get; set; } = string.Empty;
+
+        public Endereco? EnderecoSede { get; set; }
     }
 }

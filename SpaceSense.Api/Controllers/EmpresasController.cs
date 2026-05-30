@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using SpaceSense.Api.DTOs;
 using SpaceSense.Api.Services;
 
@@ -22,6 +23,7 @@ namespace SpaceSense.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<EmpresaResponseDTO>> PostEmpresa(EmpresaRequestDTO request)
         {
@@ -42,6 +44,7 @@ namespace SpaceSense.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<EmpresaResponseDTO>> PutEmpresa(int id, EmpresaRequestDTO request)
         {
@@ -55,6 +58,7 @@ namespace SpaceSense.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmpresa(int id)
         {

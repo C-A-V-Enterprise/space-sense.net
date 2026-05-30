@@ -11,6 +11,11 @@ namespace SpaceSense.Api.DTOs
         [Required(ErrorMessage = "O país da empresa é obrigatório")]
         [StringLength(50, ErrorMessage = "O país deve ter no máximo 50 caracteres")]
         public string EmpresaPais { get; set; } = string.Empty;
+
+        public string? EnderecoRua { get; set; }
+        public string? EnderecoCidade { get; set; }
+        public string? EnderecoEstado { get; set; }
+        public string? EnderecoCep { get; set; }
     }
 
     public class EmpresaResponseDTO
@@ -18,5 +23,9 @@ namespace SpaceSense.Api.DTOs
         public int EmpresaId { get; set; }
         public string EmpresaNome { get; set; } = string.Empty;
         public string EmpresaPais { get; set; } = string.Empty;
+        public string? EnderecoRua { get; set; }
+        public string? EnderecoCidade { get; set; }
+        public string? EnderecoEstado { get; set; }
+        public string? EnderecoCep { get; set; }
     }
 }

@@ -18,12 +18,12 @@ namespace SpaceSense.Api.Services
             var satelites = await _repository.GetAllAsync();
             return satelites.Select(s => new SateliteResponseDTO
             {
-                SateliteId = s.SateliteId,
+                SateliteId = s.Id,
                 SateliteNome = s.SateliteNome,
                 SateliteFuncao = s.SateliteFuncao,
                 SateliteStatus = s.SateliteStatus,
                 SateliteDataLancamento = s.SateliteDataLancamento,
-                SateliteVelocidade = s.SateliteVelocidade,
+                SateliteVelocidade = s.Velocidade,
                 EmpresaId = s.EmpresaId,
                 OrbitaId = s.OrbitaId
             });
@@ -37,7 +37,7 @@ namespace SpaceSense.Api.Services
                 SateliteFuncao = request.SateliteFuncao,
                 SateliteStatus = request.SateliteStatus,
                 SateliteDataLancamento = request.SateliteDataLancamento,
-                SateliteVelocidade = request.SateliteVelocidade,
+                Velocidade = request.SateliteVelocidade,
                 EmpresaId = request.EmpresaId,
                 OrbitaId = request.OrbitaId
             };
@@ -46,12 +46,12 @@ namespace SpaceSense.Api.Services
 
             return new SateliteResponseDTO
             {
-                SateliteId = satelite.SateliteId,
+                SateliteId = satelite.Id,
                 SateliteNome = satelite.SateliteNome,
                 SateliteFuncao = satelite.SateliteFuncao,
                 SateliteStatus = satelite.SateliteStatus,
                 SateliteDataLancamento = satelite.SateliteDataLancamento,
-                SateliteVelocidade = satelite.SateliteVelocidade,
+                SateliteVelocidade = satelite.Velocidade,
                 EmpresaId = satelite.EmpresaId,
                 OrbitaId = satelite.OrbitaId
             };
@@ -64,12 +64,12 @@ namespace SpaceSense.Api.Services
 
             return new SateliteResponseDTO
             {
-                SateliteId = s.SateliteId,
+                SateliteId = s.Id,
                 SateliteNome = s.SateliteNome,
                 SateliteFuncao = s.SateliteFuncao,
                 SateliteStatus = s.SateliteStatus,
                 SateliteDataLancamento = s.SateliteDataLancamento,
-                SateliteVelocidade = s.SateliteVelocidade,
+                SateliteVelocidade = s.Velocidade,
                 EmpresaId = s.EmpresaId,
                 OrbitaId = s.OrbitaId
             };
@@ -84,7 +84,7 @@ namespace SpaceSense.Api.Services
             satelite.SateliteFuncao = request.SateliteFuncao;
             satelite.SateliteStatus = request.SateliteStatus;
             satelite.SateliteDataLancamento = request.SateliteDataLancamento;
-            satelite.SateliteVelocidade = request.SateliteVelocidade;
+            satelite.Velocidade = request.SateliteVelocidade;
             satelite.EmpresaId = request.EmpresaId;
             satelite.OrbitaId = request.OrbitaId;
 
@@ -92,12 +92,12 @@ namespace SpaceSense.Api.Services
 
             return new SateliteResponseDTO
             {
-                SateliteId = satelite.SateliteId,
+                SateliteId = satelite.Id,
                 SateliteNome = satelite.SateliteNome,
                 SateliteFuncao = satelite.SateliteFuncao,
                 SateliteStatus = satelite.SateliteStatus,
                 SateliteDataLancamento = satelite.SateliteDataLancamento,
-                SateliteVelocidade = satelite.SateliteVelocidade,
+                SateliteVelocidade = satelite.Velocidade,
                 EmpresaId = satelite.EmpresaId,
                 OrbitaId = satelite.OrbitaId
             };
