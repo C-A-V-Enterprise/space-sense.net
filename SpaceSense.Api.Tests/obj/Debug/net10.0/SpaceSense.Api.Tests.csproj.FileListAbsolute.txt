@@ -208,3 +208,11 @@ C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests
 C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\obj\Debug\net10.0\SpaceSense.Api.Tests.pdb
 C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\obj\Debug\net10.0\SpaceSense.Api.Tests.genruntimeconfig.cache
 C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\obj\Debug\net10.0\ref\SpaceSense.Api.Tests.dll
+C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\T-GAMER\OneDrive\Área de Trabalho\space-sense.net\SpaceSense.Api.Tests\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll

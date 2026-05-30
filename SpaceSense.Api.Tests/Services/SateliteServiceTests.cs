@@ -21,13 +21,13 @@ namespace SpaceSense.Api.Tests.Services
         public async Task GetSatelitesAsync_DeveRetornarListaDeSatelites()
         {
             // Arrange
-            var satelitesSimulados = new List<Satelite>
+            var mockSatelites = new List<Satelite>
             {
-                new Satelite { SateliteId = 1, SateliteNome = "Hubble", EmpresaId = 1, OrbitaId = 1 },
-                new Satelite { SateliteId = 2, SateliteNome = "Starlink", EmpresaId = 2, OrbitaId = 2 }
+                new Satelite { Id = 1, SateliteNome = "Hubble", EmpresaId = 1, OrbitaId = 1 },
+                new Satelite { Id = 2, SateliteNome = "Starlink", EmpresaId = 2, OrbitaId = 2 }
             };
 
-            _repositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(satelitesSimulados);
+            _repositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(mockSatelites);
 
             // Act
             var resultado = await _service.GetSatelitesAsync();
