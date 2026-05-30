@@ -12,6 +12,8 @@ A inovação deste projeto baseia-se na proteção do ecossistema espacial (Econ
 - Persistência com Banco de Dados Relacional (**SQLite** configurado nativamente)
 - **Migrations** ativadas para controle de versão do banco de dados
 
+- **Link do Vídeo de Apresentação (Pitch):** [Apresentação YouTube](COLAR_SEU_LINK_AQUI)
+
 ## 🏗️ Arquitetura e Boas Práticas (Desenvolvimento)
 
 O projeto atende a estritas boas práticas de programação e arquitetura exigidas no mercado:

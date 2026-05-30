@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SpaceSense.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0518f3750c266b20815064ac920d9490d3f88cc1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0bb388a86c4363ad4fbdaba30aa259e0c3caf2da")]
 [assembly: System.Reflection.AssemblyProductAttribute("SpaceSense.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SpaceSense.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
