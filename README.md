@@ -28,38 +28,48 @@ O projeto atende a estritas boas práticas de programação e arquitetura exigid
 
 ```mermaid
 erDiagram
+    ObjetosEspaciais ||--o{ SATELITES : "é um (herança TPT)"
+    ObjetosEspaciais ||--o{ DETRITO_ESPACIAL : "é um (herança TPT)"
+    ORBITAS ||--o{ ObjetosEspaciais : "abriga"
     EMPRESAS ||--o{ SATELITES : "possui"
-    ORBITAS ||--o{ SATELITES : "abriga"
-    ORBITAS ||--o{ DETRITOS_ESPACIAIS : "contem"
 
     EMPRESAS {
         int empresa_id PK
         string empresa_nome
         string empresa_pais
+        string endereco_rua
+        string endereco_cidade
+        string endereco_estado
+        string endereco_cep
+    }
+    ObjetosEspaciais {
+        int objeto_id PK
+        decimal velocidade
+        int orbita_id FK
     }
     SATELITES {
-        int satelite_id PK
+        int objeto_id PK, FK
         string satelite_nome
         string satelite_funcao
-        decimal satelite_velocidade
+        string satelite_status
+        string satelite_data_lancamento
         int empresa_id FK
-        int orbita_id FK
     }
     ORBITAS {
         int orbita_id PK
-        string orbita_nome
-        decimal orbita_altitude
+        decimal orbita_altitude_km
+        string orbita_categoria
+        decimal orbita_inclinacao
     }
-    DETRITOS_ESPACIAIS {
-        int detrito_id PK
-        string detrito_tamanho
+    DETRITO_ESPACIAL {
+        int objeto_id PK, FK
+        decimal detrito_tamanho
         decimal detrito_risco_colisao
-        int orbita_id FK
     }
 ```
 
 ### Explicação do Diagrama (Para a Defesa)
-O banco de dados foi modelado para refletir a realidade da economia espacial. O coração do sistema são as **Órbitas**, que abrigam tanto **Satélites** quanto **Detritos Espaciais** (Relacionamento 1:N). Ao mesmo tempo, cada **Satélite** é propriedade de uma **Empresa** (Relacionamento 1:N). Com essa modelagem relacional, nós conseguimos rastrear exatamente qual empresa tem satélites em rotas de colisão com detritos, permitindo a emissão de alertas. Se uma Órbita for deletada, o comportamento em cascata do EF Core pode ser configurado de acordo com a regra de negócio.
+O banco de dados foi modelado para refletir a realidade da economia espacial, utilizando o padrão **TPT (Table-Per-Type)** do Entity Framework Core. O coração do sistema são as **Órbitas**, que abrigam **Objetos Espaciais**. As tabelas `SATELITES` e `DETRITO_ESPACIAL` herdam propriedades da tabela `ObjetosEspaciais` (compartilhando o `objeto_id` e a `velocidade`). Além disso, os dados de endereço das empresas estão embutidos (Value Objects / `[Owned]`) diretamente na tabela `EMPRESAS`, economizando JOINs nas consultas. Se uma Órbita for deletada, o comportamento em cascata do EF Core exclui os objetos espaciais nela.
 
 ## ⚙️ Instruções de Acesso e Execução
 
@@ -114,7 +124,11 @@ Use esses JSONs no **Swagger** para testar as rotas de criação (`POST`) e atua
 ```json
 {
   "empresaNome": "SpaceX",
-  "empresaPais": "EUA"
+  "empresaPais": "EUA",
+  "enderecoRua": "Rocket Road",
+  "enderecoCidade": "Hawthorne",
+  "enderecoEstado": "CA",
+  "enderecoCep": "90250"
 }
 ```
 
@@ -144,6 +158,6 @@ Use esses JSONs no **Swagger** para testar as rotas de criação (`POST`) e atua
 
 ## 👥 Integrantes
 
-- **Gabriel Garcia** - RM: [SEU_RM_AQUI] - [GitHub](https://github.com/gabriel-g-dev)
-- [NOME DO INTEGRANTE 2] - RM: [RM AQUI]
-- [NOME DO INTEGRANTE 3] - RM: [RM AQUI]
+- **André Bellandi Vital Rodrigues** - RM: 564662
+- **Vitor Augusto Oliveira de Abreu** - RM: 564227
+- **Gabriel Garcia Mayo Delatore** - RM: 563298
