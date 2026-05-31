@@ -22,6 +22,7 @@ O projeto atende a estritas boas práticas de programação e arquitetura exigid
 - **Herança no EF Core:** Utilização do padrão TPT (Table-Per-Type) com a classe base `ObjetoEspacial`.
 - **Value Objects:** Uso de `[Owned]` types para separar o `Endereco` dentro de `Empresa`.
 - **Injeção de Dependência:** O padrão `IRepository<T>` foi implementado para flexibilidade.
+- **Configurações e Segurança:** Chaves sensíveis geridas no `appsettings.json` lidas via `IConfiguration`, além da configuração de política **CORS** habilitada.
 - **DTOs:** Entrada e saída isoladas das entidades do banco.
 
 ## 📊 Diagrama do Banco de Dados
@@ -83,7 +84,7 @@ Para rodar o projeto localmente e acessar a documentação interativa:
    ```bash
    cd space-sense.net/SpaceSense.Api
    ```
-3. A base SQLite (`satguard.db`) e a Migration inicial (`InitialCreate`) já estão integradas no repositório. Basta iniciar a aplicação:
+3. A base SQLite (`satguard.db`) e a Migration da nova modelagem (`ArquiteturaAvancada`) já estão integradas no repositório. Basta iniciar a aplicação:
    ```bash
    dotnet run
    ```
