@@ -13,10 +13,12 @@ namespace SpaceSense.Api.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _service;
+        private readonly IConfiguration _configuration;
 
-        public UsuariosController(IUsuarioService service)
+        public UsuariosController(IUsuarioService service, IConfiguration configuration)
         {
             _service = service;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -41,10 +43,14 @@ namespace SpaceSense.Api.Controllers
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginDTO login)
         {
-            if (login.Email == "admin@satguard.com" && login.Senha == "123456")
+            var adminEmail = _configuration.GetSection("JwtSettings:AdminEmail").Value;
+            var adminSenha = _configuration.GetSection("JwtSettings:AdminPassword").Value;
+
+            if (login.Email == adminEmail && login.Senha == adminSenha)
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("A_Very_Long_Secret_Key_For_SatGuard_API_12345_Security_First");
+                var secret = _configuration.GetSection("JwtSettings:Secret").Value ?? "Fallback_Secret_12345";
+                var key = Encoding.ASCII.GetBytes(secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
