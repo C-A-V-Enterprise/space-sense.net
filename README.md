@@ -9,7 +9,7 @@ Esta é a ramificação do projeto construída em **.NET**, servindo como uma **
 A inovação deste projeto baseia-se na proteção do ecossistema espacial (Economia Espacial). A solução utiliza:
 - **.NET 10 (C#)** e **ASP.NET Core Web API** (Atualizado e compatível)
 - **Entity Framework Core 8/9** (ORM)
-- Persistência com Banco de Dados Relacional (**SQLite** configurado nativamente)
+- Persistência com Banco de Dados Relacional (**Oracle Database**)
 - **Migrations** ativadas para controle de versão do banco de dados
 
 - **Link do Vídeo de Apresentação (Pitch):** [Apresentação YouTube](COLAR_SEU_LINK_AQUI)
@@ -84,7 +84,11 @@ Para rodar o projeto localmente e acessar a documentação interativa:
    ```bash
    cd space-sense.net/SpaceSense.Api
    ```
-3. A base SQLite (`satguard.db`) e a Migration da nova modelagem (`ArquiteturaAvancada`) já estão integradas no repositório. Basta iniciar a aplicação:
+3. Insira suas credenciais (RM e Senha) da FIAP no arquivo `appsettings.json`. Em seguida, aplique a Migration para criar as tabelas no seu banco Oracle rodando:
+   ```bash
+   dotnet ef database update
+   ```
+4. Inicie a aplicação:
    ```bash
    dotnet run
    ```
