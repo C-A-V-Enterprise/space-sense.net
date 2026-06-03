@@ -73,9 +73,9 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-// Configura o DbContext utilizando SQLite para persistência relacional e suporte a Migrations.
+// Configura o DbContext utilizando Oracle para persistência relacional FIAP
 builder.Services.AddDbContext<SatGuardDbContext>(options =>
-    options.UseSqlite("Data Source=satguard.db"));
+    options.UseOracle(builder.Configuration.GetConnectionString("OracleFiap")));
 
 // Registro de Injeção de Dependência para a Clean Architecture
 builder.Services.AddScoped(typeof(SpaceSense.Api.Repositories.IRepository<>), typeof(SpaceSense.Api.Repositories.Repository<>));

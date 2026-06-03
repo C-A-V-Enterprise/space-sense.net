@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Oracle.EntityFrameworkCore.Metadata;
 using SpaceSense.Api.Data;
 
 #nullable disable
@@ -15,37 +16,43 @@ namespace SpaceSense.Api.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("SpaceSense.Api.Models.Alerta", b =>
                 {
                     b.Property<int>("AlertaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("alerta_id");
 
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlertaId"));
+
                     b.Property<DateTime>("AlertaData")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("TIMESTAMP(7)")
                         .HasColumnName("alerta_data");
 
                     b.Property<string>("AlertaDescricao")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(500)")
                         .HasColumnName("alerta_descricao");
 
                     b.Property<string>("AlertaNivel")
                         .IsRequired()
                         .HasMaxLength(1)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(1)")
                         .HasColumnName("alerta_nivel");
 
                     b.Property<int>("PlataformaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("PLATAFORMA_plataforma_id");
 
                     b.Property<int>("SateliteId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("satelite_id");
 
                     b.HasKey("AlertaId");
@@ -61,19 +68,21 @@ namespace SpaceSense.Api.Migrations
                 {
                     b.Property<int>("EmpresaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("empresa_id");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmpresaId"));
 
                     b.Property<string>("EmpresaNome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(50)")
                         .HasColumnName("empresa_nome");
 
                     b.Property<string>("EmpresaPais")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(50)")
                         .HasColumnName("empresa_pais");
 
                     b.HasKey("EmpresaId");
@@ -85,11 +94,13 @@ namespace SpaceSense.Api.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("objeto_id");
 
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("OrbitaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("orbita_id");
 
                     b.Property<decimal>("Velocidade")
@@ -109,8 +120,10 @@ namespace SpaceSense.Api.Migrations
                 {
                     b.Property<int>("OrbitaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("orbita_id");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrbitaId"));
 
                     b.Property<decimal>("OrbitaAltitudeKm")
                         .HasColumnType("decimal(10, 2)")
@@ -119,7 +132,7 @@ namespace SpaceSense.Api.Migrations
                     b.Property<string>("OrbitaCategoria")
                         .IsRequired()
                         .HasMaxLength(3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(3)")
                         .HasColumnName("orbita_categoria");
 
                     b.Property<decimal>("OrbitaInclinacao")
@@ -135,19 +148,21 @@ namespace SpaceSense.Api.Migrations
                 {
                     b.Property<int>("PlataformaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("plataforma_id");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlataformaId"));
 
                     b.Property<string>("PlataformaNome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(50)")
                         .HasColumnName("plataforma_nome");
 
                     b.Property<string>("PlataformaStatus")
                         .IsRequired()
                         .HasMaxLength(1)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(1)")
                         .HasColumnName("plataforma_status");
 
                     b.HasKey("PlataformaId");
@@ -159,35 +174,37 @@ namespace SpaceSense.Api.Migrations
                 {
                     b.Property<int>("UsuarioId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("usuario_id");
 
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UsuarioId"));
+
                     b.Property<int>("PlataformaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("plataforma_id");
 
                     b.Property<string>("UsuarioEmail")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(100)")
                         .HasColumnName("usuario_email");
 
                     b.Property<string>("UsuarioNome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(50)")
                         .HasColumnName("usuario_nome");
 
                     b.Property<string>("UsuarioSenha")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(20)")
                         .HasColumnName("usuario_senha");
 
                     b.Property<string>("UsuarioTipo")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(50)")
                         .HasColumnName("usuario_tipo");
 
                     b.HasKey("UsuarioId");
@@ -217,29 +234,29 @@ namespace SpaceSense.Api.Migrations
                     b.HasBaseType("SpaceSense.Api.Models.ObjetoEspacial");
 
                     b.Property<int>("EmpresaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("NUMBER(10)")
                         .HasColumnName("empresa_id");
 
                     b.Property<DateTime>("SateliteDataLancamento")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("TIMESTAMP(7)")
                         .HasColumnName("satelite_data_lancamento");
 
                     b.Property<string>("SateliteFuncao")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(500)")
                         .HasColumnName("satelite_funcao");
 
                     b.Property<string>("SateliteNome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(50)")
                         .HasColumnName("satelite_nome");
 
                     b.Property<string>("SateliteStatus")
                         .IsRequired()
                         .HasMaxLength(1)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("NVARCHAR2(1)")
                         .HasColumnName("satelite_status");
 
                     b.HasIndex("EmpresaId");
@@ -271,30 +288,30 @@ namespace SpaceSense.Api.Migrations
                     b.OwnsOne("SpaceSense.Api.Models.Endereco", "EnderecoSede", b1 =>
                         {
                             b1.Property<int>("EmpresaId")
-                                .HasColumnType("INTEGER");
+                                .HasColumnType("NUMBER(10)");
 
                             b1.Property<string>("Cep")
                                 .IsRequired()
                                 .HasMaxLength(20)
-                                .HasColumnType("TEXT")
+                                .HasColumnType("NVARCHAR2(20)")
                                 .HasColumnName("endereco_cep");
 
                             b1.Property<string>("Cidade")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("TEXT")
+                                .HasColumnType("NVARCHAR2(50)")
                                 .HasColumnName("endereco_cidade");
 
                             b1.Property<string>("Estado")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("TEXT")
+                                .HasColumnType("NVARCHAR2(50)")
                                 .HasColumnName("endereco_estado");
 
                             b1.Property<string>("Rua")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT")
+                                .HasColumnType("NVARCHAR2(100)")
                                 .HasColumnName("endereco_rua");
 
                             b1.HasKey("EmpresaId");
