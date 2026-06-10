@@ -12,7 +12,7 @@ A inovação deste projeto baseia-se na proteção do ecossistema espacial (Econ
 - Persistência com Banco de Dados Relacional (**Oracle Database**)
 - **Migrations** ativadas para controle de versão do banco de dados
 
-- **Link do Vídeo de Apresentação (Pitch):** [Apresentação YouTube](COLAR_SEU_LINK_AQUI)
+- **Link do Vídeo de Apresentação (Pitch):** [Assistir no YouTube](https://youtu.be/WOXdy4cQ1gE)
 
 ## 🏗️ Arquitetura Sênior (Desenvolvimento Avançado)
 
